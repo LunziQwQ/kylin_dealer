@@ -1,12 +1,9 @@
-from peewee import Model, CharField, IntegerField, TextField
+from peewee import IntegerField, TextField
 
-from models import database
+from models import BaseModel
 
 
-class CargoType(Model):
-    class Meta:
-        database = database
-
+class CargoType(BaseModel):
     name = TextField(unique=True)
     life = IntegerField(default=270)
     unit = TextField(default="箱")
@@ -19,7 +16,7 @@ class CargoType(Model):
         c.name = name
         c.unit = unit
         c.life = life
-        c.price = price
+        c.price = int(float(price) * 100)
         return c
 
 

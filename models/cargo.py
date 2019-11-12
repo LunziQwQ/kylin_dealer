@@ -1,17 +1,14 @@
-from peewee import Model, CharField, IntegerField, DateField, ForeignKeyField
+from peewee import IntegerField, DateField, ForeignKeyField, TextField
 
-from models import database
+from models import BaseModel
 from models.cargo_type import CargoType
 
 
-class Cargo(Model):
-    class Meta:
-        database = database
-
-    cargo_type = ForeignKeyField(CargoType, related_name='name')
+class Cargo(BaseModel):
+    cargo_type = ForeignKeyField(CargoType, related_name="cargo_list")
     production_date = DateField()
-    size = IntegerField(default=0)
-    comment = CharField()
+    count = IntegerField(default=0)
+    comment = TextField()
 
 
 Cargo.create_table()

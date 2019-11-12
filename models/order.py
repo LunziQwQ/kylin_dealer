@@ -1,17 +1,15 @@
-from peewee import Model, CharField, IntegerField, ForeignKeyField, DateField
+from peewee import CharField, IntegerField, ForeignKeyField, DateField
 
-from models import database
+from models import BaseModel
 from models.cargo import Cargo
+from models.cargo_type import CargoType
 from models.custom import Custom
 
 
-class Order(Model):
-    class Meta:
-        database = database
-
-    cargo_type = ForeignKeyField(Cargo, related_name='cargo_type')
-    production_date = ForeignKeyField(Cargo, related_name='production_date')
-    custom_name = ForeignKeyField(Custom, related_name='name')
+class Order(BaseModel):
+    cargo_type = ForeignKeyField(CargoType, related_name='order_list')
+    production_date = ForeignKeyField(Cargo, related_name='order_list')
+    custom_name = ForeignKeyField(Custom, related_name='order_list')
     size = IntegerField(default=0)
     comment = CharField(default="")
     need_pay = IntegerField(default=0)

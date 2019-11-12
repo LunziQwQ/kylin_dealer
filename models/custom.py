@@ -1,12 +1,9 @@
-from peewee import Model, CharField, IntegerField
+from peewee import CharField, IntegerField
 
-from models import database
+from models import BaseModel
 
 
-class Custom(Model):
-    class Meta:
-        database = database
-
+class Custom(BaseModel):
     name = CharField(primary_key=True)
     phone = CharField()
     addr = CharField(default="")
