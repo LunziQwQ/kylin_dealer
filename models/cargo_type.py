@@ -13,5 +13,14 @@ class CargoType(Model):
     count = IntegerField(default=0)
     price = IntegerField(default=0)
 
+    @staticmethod
+    def create(name, unit, life, price):
+        c = CargoType()
+        c.name = name
+        c.unit = unit
+        c.life = life
+        c.price = price
+        return c
+
 
 CargoType.create_table()

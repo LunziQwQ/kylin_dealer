@@ -76,10 +76,10 @@
   <widget class="QPushButton" name="buyBtn">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>20</y>
+     <x>540</x>
+     <y>10</y>
      <width>111</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
@@ -89,14 +89,105 @@
   <widget class="QPushButton" name="saleBtn">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>20</y>
+     <x>660</x>
+     <y>10</y>
      <width>111</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
     <string>出货</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="lastPageBtn">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>91</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>上一页</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="pageSizeEdit">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>40</y>
+     <width>113</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>10</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="eachPageLabel">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>40</y>
+     <width>60</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>每页显示：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="noPageLabel">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>16</y>
+     <width>60</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前页数：</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pageLabel">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>15</y>
+     <width>60</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="nextPageBtn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>10</y>
+     <width>91</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>下一页</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addCargoTypeBtn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>111</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加种类</string>
    </property>
   </widget>
  </widget>
