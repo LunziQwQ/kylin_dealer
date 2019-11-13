@@ -4,7 +4,7 @@ from models import BaseModel
 
 
 class Custom(BaseModel):
-    name = CharField(primary_key=True)
+    name = CharField(unique=True)
     phone = CharField()
     addr = CharField(default="")
     comment = CharField(default="")

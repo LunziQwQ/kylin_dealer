@@ -11,7 +11,7 @@ class CargoType(BaseModel):
     price = IntegerField(default=0)
 
     @staticmethod
-    def create(name, unit, life, price):
+    def build(name, unit, life, price):
         c = CargoType()
         c.name = name
         c.unit = unit

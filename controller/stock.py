@@ -1,9 +1,10 @@
 import datetime
 import time
 
-from PyQt5.QtWidgets import QMainWindow, QHeaderView, QApplication, QTableWidgetItem, QMessageBox, QTableWidget
+from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessageBox, QTableWidget
 
 from controller.add_cargo_type import AddCargoTypeDialog
+from controller.bug_cargo import BuyCargoDialog
 from ui.stock import Ui_StockWindow
 
 from models.cargo_type import CargoType
@@ -59,7 +60,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             if not name:
                 QMessageBox.warning(self, "参数错误", "参数错误：添加的货物种类必须填写名字", QMessageBox.Yes)
             else:
-                new_cargo_type = CargoType.create(name, unit, life, price)
+                new_cargo_type = CargoType.build(name, unit, life, price)
                 try:
                     new_cargo_type.save()
                 except Exception:
@@ -70,7 +71,22 @@ class StockController(QMainWindow, Ui_StockWindow):
         pass
 
     def buy_btn_on_click(self):
-        pass
+        now_row = self.cargoTypeListTable.currentRow()
+        ct_name = self.cargoTypeListTable.item(now_row, 0).text()
+        cargo_type = CargoType.get(CargoType.name == ct_name)
+        ct_unit = cargo_type.unit
+
+        buy_dialog = BuyCargoDialog(self, ct_name, ct_unit)
+        if buy_dialog.exec_():
+            production_date, count, comment = buy_dialog.get_result()
+            new_cargo = Cargo.build(cargo_type, production_date, count,
+                                    comment)
+            try:
+                self.add_cargo(new_cargo)
+            except Exception as e:
+                print(e)
+                QMessageBox.warning(self, "添加进货失败", "添加进货信息失败", QMessageBox.Yes)
+            self.cargo_type_table_on_click(now_row, 0)
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)
@@ -99,23 +115,6 @@ class StockController(QMainWindow, Ui_StockWindow):
         except Exception:
             self.pageSizeEdit.setText(str(self.page_size))
 
-    def get_cargo_type_list(self, page):
-        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(self.page_size))
-        if results.count() > 0:
-            self.now_page = page
-            results = [i for i in results]
-            return results
-        else:
-            return None
-
-    def get_cargo_list(self, ct_name):
-        results = CargoType.get(CargoType.name == ct_name).cargo_list
-        if results.count() > 0:
-            results = [i for i in results]
-            return results
-        else:
-            return []
-
     def draw_cargo_type_table(self, ct_list):
         self.cargoTypeListTable.clearContents()
         self.cargoTypeListTable.setRowCount(0)
@@ -137,7 +136,33 @@ class StockController(QMainWindow, Ui_StockWindow):
             now_row = self.cargoListTable.rowCount()
             self.cargoListTable.setRowCount(now_row + 1)
 
-            self.cargoListTable.setItem(now_row, 0, QTableWidgetItem(
-                time.strftime('%Y-%m-%d', time.localtime(cargo.production_date / 1000))))
+            self.cargoListTable.setItem(now_row, 0, QTableWidgetItem(str(cargo.production_date)))
             self.cargoListTable.setItem(now_row, 1, QTableWidgetItem("%d%s" % (cargo.count, unit)))
             self.cargoListTable.setItem(now_row, 2, QTableWidgetItem(cargo.comment))
+
+    def get_cargo_type_list(self, page):
+        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(self.page_size))
+        if results.count() > 0:
+            self.now_page = page
+            results = [i for i in results]
+            return results
+        else:
+            return None
+
+    # ----------- Service ---------------
+
+    def get_cargo_list(self, ct_name):
+        results = CargoType.get(CargoType.name == ct_name).cargo_list
+        if results.count() > 0:
+            results = [i for i in results]
+            return results
+        else:
+            return []
+
+    def add_cargo(self, cargo):
+        for old_cargo in cargo.cargo_type.cargo_list:
+            if old_cargo.production_date == cargo.production_date:
+                old_cargo.count += cargo.count
+                old_cargo.save()
+                return
+        cargo.save()

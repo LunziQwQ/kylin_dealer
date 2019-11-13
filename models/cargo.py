@@ -1,3 +1,5 @@
+import datetime
+
 from peewee import IntegerField, DateField, ForeignKeyField, TextField
 
 from models import BaseModel
@@ -9,6 +11,15 @@ class Cargo(BaseModel):
     production_date = DateField()
     count = IntegerField(default=0)
     comment = TextField()
+
+    @staticmethod
+    def build(cargo_type, production_date, count, comment):
+        c = Cargo()
+        c.cargo_type = cargo_type
+        c.production_date = datetime.date(*production_date)
+        c.count = int(count)
+        c.comment = comment
+        return c
 
 
 Cargo.create_table()
