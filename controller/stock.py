@@ -46,7 +46,7 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.pageSizeEdit.setText(str(self.page_size))
 
     def exec(self, selected_row=0):
-        ct_list = self.get_cargo_type_list(self.now_page)
+        ct_list = self.get_cargo_type_list(self.now_page, self.page_size)
         if ct_list is not None:
             self.draw_cargo_type_table(ct_list)
         if self.cargoTypeListTable.rowCount() > 0:
@@ -97,16 +97,15 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.draw_cargo_table(self.get_cargo_list(ct_name), ct_unit)
 
     def next_page_btn_on_click(self):
-        ct_list = self.get_cargo_type_list(self.now_page + 1)
+        ct_list = self.get_cargo_type_list(self.now_page + 1, self.page_size)
         if ct_list is not None:
-            self.draw_cargo_type_table(ct_list)
-            self.pageLabel.setText(str(self.now_page))
+            self.now_page += 1
+            self.exec()
 
     def last_page_btn_on_click(self):
         if self.now_page > 1:
-            ct_list = self.get_cargo_type_list(self.now_page - 1)
-            self.draw_cargo_type_table(ct_list)
-            self.pageLabel.setText(str(self.now_page))
+            self.now_page -= 1
+            self.exec()
 
     def page_size_edit_text_change(self):
         try:
@@ -141,10 +140,9 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.cargoListTable.setItem(now_row, 1, QTableWidgetItem("%d%s" % (cargo.count, unit)))
             self.cargoListTable.setItem(now_row, 2, QTableWidgetItem(cargo.comment))
 
-    def get_cargo_type_list(self, page):
-        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(self.page_size))
+    def get_cargo_type_list(self, page, page_size):
+        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(page_size))
         if results.count() > 0:
-            self.now_page = page
             results = [i for i in results]
             return results
         else:
