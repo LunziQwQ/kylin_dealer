@@ -1,2 +1,4 @@
 database.db
 .idea/
+dist/
+build/

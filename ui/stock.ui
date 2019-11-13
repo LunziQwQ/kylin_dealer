@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>库存管理</string>
   </property>
   <widget class="QTableWidget" name="cargoTypeListTable">
    <property name="geometry">

@@ -72,7 +72,7 @@ class Ui_StockWindow(object):
 
     def retranslateUi(self, StockWindow):
         _translate = QtCore.QCoreApplication.translate
-        StockWindow.setWindowTitle(_translate("StockWindow", "Form"))
+        StockWindow.setWindowTitle(_translate("StockWindow", "库存管理"))
         item = self.cargoTypeListTable.horizontalHeaderItem(0)
         item.setText(_translate("StockWindow", "货物种类"))
         item = self.cargoTypeListTable.horizontalHeaderItem(1)

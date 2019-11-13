@@ -87,6 +87,7 @@ class StockController(QMainWindow, Ui_StockWindow):
                 print(e)
                 QMessageBox.warning(self, "添加进货失败", "添加进货信息失败", QMessageBox.Yes)
             self.cargo_type_table_on_click(now_row, 0)
+            self.cargoTypeListTable.item(now_row, 2).setText(str(cargo_type.count))
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)
@@ -152,7 +153,7 @@ class StockController(QMainWindow, Ui_StockWindow):
     # ----------- Service ---------------
 
     def get_cargo_list(self, ct_name):
-        results = CargoType.get(CargoType.name == ct_name).cargo_list
+        results = CargoType.get(CargoType.name == ct_name).cargo_list.order_by(Cargo.production_date)
         if results.count() > 0:
             results = [i for i in results]
             return results
@@ -160,7 +161,10 @@ class StockController(QMainWindow, Ui_StockWindow):
             return []
 
     def add_cargo(self, cargo):
-        for old_cargo in cargo.cargo_type.cargo_list:
+        cargo_type = cargo.cargo_type
+        cargo_type.count += cargo.count
+        cargo_type.save()
+        for old_cargo in cargo_type.cargo_list:
             if old_cargo.production_date == cargo.production_date:
                 old_cargo.count += cargo.count
                 old_cargo.save()
