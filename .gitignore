@@ -1,4 +1,5 @@
 database.db
-.idea/
-dist/
-build/
+.idea/*
+dist/*
+build/*
+dealer.spec
