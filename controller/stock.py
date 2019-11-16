@@ -21,7 +21,7 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.cargoListTable.setEditTriggers(QTableWidget.NoEditTriggers)
 
         self.cargoTypeListTable.cellClicked.connect(self.cargo_type_table_on_click)
-        self.cargoListTable.cellClicked.connect(self.cargo_list_table_on_click)
+        self.cargoListTable.cellClicked.connect(self.cargoListTable.selectRow)
 
         self.editBtn.clicked.connect(self.edit_btn_on_click)
         self.buyBtn.clicked.connect(self.buy_btn_on_click)
@@ -83,7 +83,7 @@ class StockController(QMainWindow, Ui_StockWindow):
         cargo_type = self.ct_list[ct_now_row]
         reply = QMessageBox.warning(self, "删除货物种类", "您确定要删除%s吗" % cargo_type.name, QMessageBox.Yes | QMessageBox.Cancel)
         if reply == QMessageBox.Yes:
-            ex = cargo_type.delete_instance()
+            cargo_type.delete_instance()
             self.ct_list.remove(cargo_type)
             self.exec()
 
@@ -136,9 +136,6 @@ class StockController(QMainWindow, Ui_StockWindow):
         ct_unit = self.cargoTypeListTable.item(row, 1).text()
 
         self.draw_cargo_table(self.get_cargo_list(ct_name), ct_unit)
-
-    def cargo_list_table_on_click(self, row, column):
-        self.cargoListTable.selectRow(row)
 
     def next_page_btn_on_click(self):
         ct_list = self.get_cargo_type_list(self.now_page + 1, self.page_size)

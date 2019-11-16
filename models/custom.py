@@ -11,5 +11,14 @@ class Custom(BaseModel):
     trade_money = IntegerField(default=0)
     owe_money = IntegerField(default=0)
 
+    @staticmethod
+    def build(name, phone, addr, comment):
+        c = Custom()
+        c.name = name
+        c.phone = phone
+        c.addr = addr
+        c.comment = comment
+        return c
+
 
 Custom.create_table()
