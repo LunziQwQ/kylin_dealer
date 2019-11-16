@@ -4,7 +4,7 @@ import time
 from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessageBox, QTableWidget
 
 from controller.add_cargo_type import AddCargoTypeDialog
-from controller.bug_cargo import BuyCargoDialog
+from controller.edit_cargo import EditCargoDialog
 from ui.stock import Ui_StockWindow
 
 from models.cargo_type import CargoType
@@ -21,12 +21,14 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.cargoListTable.setEditTriggers(QTableWidget.NoEditTriggers)
 
         self.cargoTypeListTable.cellClicked.connect(self.cargo_type_table_on_click)
+        self.cargoListTable.cellClicked.connect(self.cargo_list_table_on_click)
 
-        self.saleBtn.clicked.connect(self.sale_btn_on_click)
+        self.editBtn.clicked.connect(self.edit_btn_on_click)
         self.buyBtn.clicked.connect(self.buy_btn_on_click)
         self.nextPageBtn.clicked.connect(self.next_page_btn_on_click)
         self.lastPageBtn.clicked.connect(self.last_page_btn_on_click)
         self.addCargoTypeBtn.clicked.connect(self.add_cargo_type_btn_on_click)
+        self.delCargoTypeBtn.clicked.connect(self.del_cargo_type_btn_on_click)
 
         self.pageSizeEdit.textChanged.connect(self.page_size_edit_text_change)
 
@@ -45,13 +47,18 @@ class StockController(QMainWindow, Ui_StockWindow):
 
         self.pageSizeEdit.setText(str(self.page_size))
 
+        self.ct_list = []
+        self.cargo_list = []
+
     def exec(self, selected_row=0):
         ct_list = self.get_cargo_type_list(self.now_page, self.page_size)
-        if ct_list is not None:
-            self.draw_cargo_type_table(ct_list)
-        if self.cargoTypeListTable.rowCount() > 0:
+        self.draw_cargo_type_table(ct_list)
+        if len(self.ct_list) > 0:
             self.cargoTypeListTable.selectRow(selected_row)
-            self.cargo_type_table_on_click(row=0, column=0)
+            self.cargo_type_table_on_click(row=selected_row, column=0)
+        else:
+            self.cargoListTable.clearContents()
+            self.cargoListTable.setRowCount(0)
 
     def add_cargo_type_btn_on_click(self):
         add_dialog = AddCargoTypeDialog(self)
@@ -67,16 +74,51 @@ class StockController(QMainWindow, Ui_StockWindow):
                     QMessageBox.warning(self, "添加失败", "添加失败：可能是您的货物种类名称重复", QMessageBox.Yes)
                 self.exec()
 
-    def sale_btn_on_click(self):
-        pass
+    def del_cargo_type_btn_on_click(self):
+        if self.cargoTypeListTable.rowCount() == 0:
+            QMessageBox.warning(self, "删除失败", "选中一条货物种类才可删除", QMessageBox.Yes)
+            return
+
+        ct_now_row = self.cargoTypeListTable.currentRow()
+        cargo_type = self.ct_list[ct_now_row]
+        reply = QMessageBox.warning(self, "删除货物种类", "您确定要删除%s吗" % cargo_type.name, QMessageBox.Yes | QMessageBox.Cancel)
+        if reply == QMessageBox.Yes:
+            ex = cargo_type.delete_instance()
+            self.ct_list.remove(cargo_type)
+            self.exec()
+
+    def edit_btn_on_click(self):
+        ct_now_row = self.cargoTypeListTable.currentRow()
+        cargo_type = self.ct_list[ct_now_row]
+
+        if self.cargoListTable.rowCount() == 0:
+            QMessageBox.warning(self, "编辑货物失败", "选中一条货物才可修改", QMessageBox.Yes)
+            return
+
+        cargo_now_row = self.cargoListTable.currentRow()
+        cargo = self.cargo_list[cargo_now_row]
+        old_count = cargo.count
+        edit_dialog = EditCargoDialog(self, cargo_type, cargo)
+        if edit_dialog.exec_():
+            production_date, count, comment = edit_dialog.get_result()
+            count_change = int(count) - old_count
+            if int(count) == 0:
+                ex = cargo.delete_instance()
+            else:
+                cargo.comment = comment
+                cargo.production_date = datetime.date(*production_date)
+                cargo.count = int(count)
+                cargo.save()
+
+            cargo_type.count += count_change
+            cargo_type.save()
+            self.exec(ct_now_row)
 
     def buy_btn_on_click(self):
-        now_row = self.cargoTypeListTable.currentRow()
-        ct_name = self.cargoTypeListTable.item(now_row, 0).text()
-        cargo_type = CargoType.get(CargoType.name == ct_name)
-        ct_unit = cargo_type.unit
+        ct_now_row = self.cargoTypeListTable.currentRow()
+        cargo_type = self.ct_list[ct_now_row]
 
-        buy_dialog = BuyCargoDialog(self, ct_name, ct_unit)
+        buy_dialog = EditCargoDialog(self, cargo_type)
         if buy_dialog.exec_():
             production_date, count, comment = buy_dialog.get_result()
             new_cargo = Cargo.build(cargo_type, production_date, count,
@@ -86,8 +128,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             except Exception as e:
                 print(e)
                 QMessageBox.warning(self, "添加进货失败", "添加进货信息失败", QMessageBox.Yes)
-            self.cargo_type_table_on_click(now_row, 0)
-            self.cargoTypeListTable.item(now_row, 2).setText(str(cargo_type.count))
+            self.exec(ct_now_row)
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)
@@ -95,6 +136,9 @@ class StockController(QMainWindow, Ui_StockWindow):
         ct_unit = self.cargoTypeListTable.item(row, 1).text()
 
         self.draw_cargo_table(self.get_cargo_list(ct_name), ct_unit)
+
+    def cargo_list_table_on_click(self, row, column):
+        self.cargoListTable.selectRow(row)
 
     def next_page_btn_on_click(self):
         ct_list = self.get_cargo_type_list(self.now_page + 1, self.page_size)
@@ -116,6 +160,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.pageSizeEdit.setText(str(self.page_size))
 
     def draw_cargo_type_table(self, ct_list):
+        self.ct_list = ct_list
         self.cargoTypeListTable.clearContents()
         self.cargoTypeListTable.setRowCount(0)
         for ct in ct_list:
@@ -129,6 +174,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.cargoTypeListTable.setItem(now_row, 4, QTableWidgetItem("%.2f元" % (float(ct.price) / 100)))
 
     def draw_cargo_table(self, cargo_list, unit):
+        self.cargo_list = cargo_list
         self.cargoListTable.clearContents()
         self.cargoListTable.setRowCount(0)
 
@@ -146,7 +192,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             results = [i for i in results]
             return results
         else:
-            return None
+            return []
 
     # ----------- Service ---------------
 

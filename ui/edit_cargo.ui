@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BugCargo</class>
- <widget class="QDialog" name="BugCargo">
+ <class>EditCargo</class>
+ <widget class="QDialog" name="EditCargo">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -156,7 +156,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>BugCargo</receiver>
+   <receiver>EditCargo</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -172,7 +172,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>BugCargo</receiver>
+   <receiver>EditCargo</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

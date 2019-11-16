@@ -86,25 +86,25 @@
     <string>进货</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="saleBtn">
+  <widget class="QPushButton" name="editBtn">
    <property name="geometry">
     <rect>
-     <x>660</x>
+     <x>970</x>
      <y>10</y>
      <width>111</width>
      <height>61</height>
     </rect>
    </property>
    <property name="text">
-    <string>出货</string>
+    <string>修改</string>
    </property>
   </widget>
   <widget class="QPushButton" name="lastPageBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>190</x>
      <y>10</y>
-     <width>91</width>
+     <width>71</width>
      <height>61</height>
     </rect>
    </property>
@@ -115,7 +115,7 @@
   <widget class="QLineEdit" name="pageSizeEdit">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>340</x>
      <y>40</y>
      <width>113</width>
      <height>21</height>
@@ -128,7 +128,7 @@
   <widget class="QLabel" name="eachPageLabel">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>270</x>
      <y>40</y>
      <width>60</width>
      <height>21</height>
@@ -141,7 +141,7 @@
   <widget class="QLabel" name="noPageLabel">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>270</x>
      <y>16</y>
      <width>60</width>
      <height>20</height>
@@ -154,7 +154,7 @@
   <widget class="QLabel" name="pageLabel">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>340</x>
      <y>15</y>
      <width>60</width>
      <height>21</height>
@@ -167,9 +167,9 @@
   <widget class="QPushButton" name="nextPageBtn">
    <property name="geometry">
     <rect>
-     <x>440</x>
+     <x>460</x>
      <y>10</y>
-     <width>91</width>
+     <width>71</width>
      <height>61</height>
     </rect>
    </property>
@@ -182,12 +182,25 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>111</width>
+     <width>91</width>
      <height>61</height>
     </rect>
    </property>
    <property name="text">
-    <string>添加种类</string>
+    <string>添加</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delCargoTypeBtn">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>10</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>删除</string>
    </property>
   </widget>
  </widget>
