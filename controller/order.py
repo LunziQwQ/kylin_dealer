@@ -18,6 +18,8 @@ class OrderController(QMainWindow, Ui_OrderWindow):
         self.orderListTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.saleItemListTable.setEditTriggers(QTableWidget.NoEditTriggers)
 
+        self.nextPageBtn.clicked.connect(self.next_page_btn_on_click)
+        self.lastPageBtn.clicked.connect(self.last_page_btn_on_click)
         self.orderListTable.cellClicked.connect(self.order_list_table_on_click)
         self.saleItemListTable.cellClicked.connect(self.saleItemListTable.selectRow)
         self.sortComboBox.currentIndexChanged.connect(self.sort_combo_box_change)
@@ -66,7 +68,7 @@ class OrderController(QMainWindow, Ui_OrderWindow):
             self.pageSizeEdit.setText(str(self.page_size))
 
     def next_page_btn_on_click(self):
-        order_list = OrderController.get_cargo_type_list_by_page(self.now_page + 1, self.page_size)
+        order_list = OrderService.get_order_list(self.now_page + 1, self.page_size, self.sortComboBox.currentText())
         if order_list:
             self.now_page += 1
             self.exec()

@@ -38,7 +38,6 @@ class Order(BaseModel):
                 "life": cargo_type.life
             }
             sale_list.append(item)
-            print(type(item), item)
 
         order.sale_list = json.dumps(sale_list)
         return order

@@ -7,7 +7,7 @@ from models.cargo import Cargo
 class CargoService(object):
     @staticmethod
     def get_cargo_list_by_ct_name(ct_name):
-        results = CargoType.get(CargoType.name == ct_name).cargo_list.order_by(Cargo.production_date)
+        results = CargoType.get(CargoType.name == ct_name).cargo_list.order_by(Cargo.production_date.desc())
         if results.count() > 0:
             return list(results)
         else:

@@ -9,9 +9,9 @@ class OrderService(object):
     @staticmethod
     def get_order_list(page, page_size, order_method):
         order_method_map = {
-            "订单日期": Order.date,
-            "欠款": Order.owe_money,
-            "总金额": Order.need_pay,
+            "订单日期": Order.date.desc(),
+            "欠款": Order.owe_money.desc(),
+            "总金额": Order.need_pay.desc(),
             "客户名称": Order.custom.name
         }
         results = Order.select().order_by(order_method_map[order_method]).paginate(int(page), int(page_size))
