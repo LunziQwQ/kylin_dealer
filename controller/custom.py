@@ -37,7 +37,6 @@ class CustomController(QMainWindow, Ui_CustomWindow):
         CustomService.draw_custom_list_table(self.customListTable, self.custom_list)
         if len(self.custom_list) > 0:
             self.customListTable.selectRow(selected_row)
-            self.customListTable.selectRow(selected_row)
         else:
             self.customListTable.clearContents()
             self.customListTable.setRowCount(0)

@@ -10,7 +10,7 @@ class CustomService(object):
         custom_list = Custom.select()
         if custom_list.count() > 0:
             if not search_text:
-                return [i for i in custom_list]
+                return list(custom_list)
             else:
                 return list(filter(lambda c: search_text in c.name \
                                              or search_text in c.phone \
@@ -18,6 +18,12 @@ class CustomService(object):
                                              or search_text in c.comment, custom_list))
         else:
             return []
+
+    @staticmethod
+    def sale_cargo_for_custom(custom, need_pay, owe):
+        custom.owe_money += owe
+        custom.trade_money += need_pay
+        custom.save()
 
     @staticmethod
     def draw_custom_list_table(table, custom_list):

@@ -68,7 +68,7 @@
     <string>选择客户...</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="cargoListTable">
+  <widget class="QTableWidget" name="saleListTable">
    <property name="geometry">
     <rect>
      <x>10</x>

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QDialog, QTableWidgetItem, QTableWidget, QHeaderView
 
 from services.custom import CustomService
 from ui.choose_custom import Ui_ChooseCustom
@@ -9,8 +9,17 @@ class ChooseCustomDialog(QDialog, Ui_ChooseCustom):
         super(ChooseCustomDialog, self).__init__(parent)
         self.setupUi(self)
 
+        self.customListTable.setEditTriggers(QTableWidget.NoEditTriggers)
+
         self.searchEdit.textChanged.connect(self.search_edit_changed)
         self.customListTable.cellClicked.connect(self.customListTable.selectRow)
+
+        self.customListTable.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.customListTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.customListTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.customListTable.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.customListTable.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+        self.customListTable.horizontalHeader().setSectionResizeMode(5, QHeaderView.Stretch)
 
         self.custom_list = []
         self.exec()

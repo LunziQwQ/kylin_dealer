@@ -6,6 +6,10 @@ from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessage
 from controller.add_cargo_type import AddCargoTypeDialog
 from controller.edit_cargo import EditCargoDialog
 from controller.sale_cargo import SaleCargoDialog
+from models.order import Order
+from services.cargo import CargoService
+from services.cargo_type import CargoTypeService
+from services.custom import CustomService
 from ui.stock import Ui_StockWindow
 
 from models.cargo_type import CargoType
@@ -53,8 +57,8 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.cargo_list = []
 
     def exec(self, selected_row=0):
-        ct_list = self.get_cargo_type_list(self.now_page, self.page_size)
-        self.draw_cargo_type_table(ct_list)
+        self.ct_list = CargoTypeService.get_cargo_type_list_by_page(self.now_page, self.page_size)
+        CargoTypeService.draw_cargo_type_table(self.cargoTypeListTable, self.ct_list)
         if len(self.ct_list) > 0:
             self.cargoTypeListTable.selectRow(selected_row)
             self.cargo_type_table_on_click(row=selected_row, column=0)
@@ -126,7 +130,7 @@ class StockController(QMainWindow, Ui_StockWindow):
             new_cargo = Cargo.build(cargo_type, production_date, count,
                                     comment)
             try:
-                self.add_cargo(new_cargo)
+                CargoService.add_cargo(new_cargo)
             except Exception as e:
                 print(e)
                 QMessageBox.warning(self, "添加进货失败", "添加进货信息失败", QMessageBox.Yes)
@@ -135,17 +139,25 @@ class StockController(QMainWindow, Ui_StockWindow):
     def sale_btn_on_click(self):
         sale_dialog = SaleCargoDialog(self)
         if sale_dialog.exec_():
-            pass
+            custom, sale_dict, need_pay, now_pay, owe, date, comment = sale_dialog.get_result()
+            if not custom:
+                QMessageBox.warning(self, "出货失败", "必须选择一个客户", QMessageBox.Yes)
+                return
+            order = Order.build(custom, sale_dict, need_pay, now_pay, owe, date, comment)
+            order.save()
+            CargoService.sale_cargoes(sale_dict)
+            CustomService.sale_cargo_for_custom(custom, need_pay, owe)
+            QMessageBox.information(self, "出货成功", "出货成功：可在订单管理中查询", QMessageBox.Yes)
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)
         ct_name = self.cargoTypeListTable.item(row, 0).text()
-        ct_unit = self.cargoTypeListTable.item(row, 1).text()
 
-        self.draw_cargo_table(self.get_cargo_list(ct_name), ct_unit)
+        self.cargo_list = CargoService.get_cargo_list_by_ct_name(ct_name)
+        CargoService.draw_cargo_table(self.cargoListTable, self.cargo_list)
 
     def next_page_btn_on_click(self):
-        ct_list = self.get_cargo_type_list(self.now_page + 1, self.page_size)
+        ct_list = CargoTypeService.get_cargo_type_list_by_page(self.now_page + 1, self.page_size)
         if ct_list is not None:
             self.now_page += 1
             self.exec()
@@ -162,59 +174,3 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.exec()
         except Exception:
             self.pageSizeEdit.setText(str(self.page_size))
-
-    def draw_cargo_type_table(self, ct_list):
-        self.ct_list = ct_list
-        self.cargoTypeListTable.clearContents()
-        self.cargoTypeListTable.setRowCount(0)
-        for ct in ct_list:
-            now_row = self.cargoTypeListTable.rowCount()
-            self.cargoTypeListTable.setRowCount(now_row + 1)
-
-            self.cargoTypeListTable.setItem(now_row, 0, QTableWidgetItem(ct.name))
-            self.cargoTypeListTable.setItem(now_row, 1, QTableWidgetItem(ct.unit))
-            self.cargoTypeListTable.setItem(now_row, 2, QTableWidgetItem("%d" % ct.count))
-            self.cargoTypeListTable.setItem(now_row, 3, QTableWidgetItem("%d天" % ct.life))
-            self.cargoTypeListTable.setItem(now_row, 4, QTableWidgetItem("%.2f元" % (float(ct.price) / 100)))
-
-    def draw_cargo_table(self, cargo_list, unit):
-        self.cargo_list = cargo_list
-        self.cargoListTable.clearContents()
-        self.cargoListTable.setRowCount(0)
-
-        for cargo in cargo_list:
-            now_row = self.cargoListTable.rowCount()
-            self.cargoListTable.setRowCount(now_row + 1)
-
-            self.cargoListTable.setItem(now_row, 0, QTableWidgetItem(str(cargo.production_date)))
-            self.cargoListTable.setItem(now_row, 1, QTableWidgetItem("%d%s" % (cargo.count, unit)))
-            self.cargoListTable.setItem(now_row, 2, QTableWidgetItem(cargo.comment))
-
-    def get_cargo_type_list(self, page, page_size):
-        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(page_size))
-        if results.count() > 0:
-            results = [i for i in results]
-            return results
-        else:
-            return []
-
-    # ----------- Service ---------------
-
-    def get_cargo_list(self, ct_name):
-        results = CargoType.get(CargoType.name == ct_name).cargo_list.order_by(Cargo.production_date)
-        if results.count() > 0:
-            results = [i for i in results]
-            return results
-        else:
-            return []
-
-    def add_cargo(self, cargo):
-        cargo_type = cargo.cargo_type
-        cargo_type.count += cargo.count
-        cargo_type.save()
-        for old_cargo in cargo_type.cargo_list:
-            if old_cargo.production_date == cargo.production_date:
-                old_cargo.count += cargo.count
-                old_cargo.save()
-                return
-        cargo.save()
