@@ -1,6 +1,7 @@
 import datetime
 import time
 
+from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessageBox, QTableWidget
 
 from controller.add_cargo_type import AddCargoTypeDialog
@@ -21,6 +22,10 @@ class StockController(QMainWindow, Ui_StockWindow):
         QMainWindow.__init__(self)
         Ui_StockWindow.__init__(self)
         self.setupUi(self)
+
+        int_val = QIntValidator(self)
+        int_val.setBottom(1)
+        self.pageSizeEdit.setValidator(int_val)
 
         self.cargoTypeListTable.setEditTriggers(QTableWidget.NoEditTriggers)
         self.cargoListTable.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -48,7 +53,7 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.cargoListTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.cargoListTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
 
-        self.page_size = 10
+        self.page_size = 15
         self.now_page = 1
 
         self.pageSizeEdit.setText(str(self.page_size))
@@ -57,6 +62,7 @@ class StockController(QMainWindow, Ui_StockWindow):
         self.cargo_list = []
 
     def exec(self, selected_row=0):
+        self.pageLabel.setText(str(self.now_page))
         self.ct_list = CargoTypeService.get_cargo_type_list_by_page(self.now_page, self.page_size)
         CargoTypeService.draw_cargo_type_table(self.cargoTypeListTable, self.ct_list)
         if len(self.ct_list) > 0:
@@ -158,7 +164,7 @@ class StockController(QMainWindow, Ui_StockWindow):
 
     def next_page_btn_on_click(self):
         ct_list = CargoTypeService.get_cargo_type_list_by_page(self.now_page + 1, self.page_size)
-        if ct_list is not None:
+        if ct_list:
             self.now_page += 1
             self.exec()
 

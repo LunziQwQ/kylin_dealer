@@ -1,0 +1,52 @@
+import json
+
+from PyQt5.QtWidgets import QTableWidgetItem
+
+from models.order import Order
+
+
+class OrderService(object):
+    @staticmethod
+    def get_order_list(page, page_size, order_method):
+        order_method_map = {
+            "订单日期": Order.date,
+            "欠款": Order.owe_money,
+            "总金额": Order.need_pay,
+            "客户名称": Order.custom.name
+        }
+        results = Order.select().order_by(order_method_map[order_method]).paginate(int(page), int(page_size))
+        if results.count() > 0:
+            return list(results)
+        else:
+            return []
+
+    @staticmethod
+    def draw_order_list_table(table, order_list):
+        table.clearContents()
+        table.setRowCount(0)
+        for order in order_list:
+            now_row = table.rowCount()
+            table.setRowCount(now_row + 1)
+
+            table.setItem(now_row, 0, QTableWidgetItem(order.custom.name))
+            table.setItem(now_row, 1, QTableWidgetItem("%.2f元" % (float(order.need_pay) / 100)))
+            table.setItem(now_row, 2, QTableWidgetItem("%.2f元" % (float(order.now_pay) / 100)))
+            table.setItem(now_row, 3, QTableWidgetItem("%.2f元" % (float(order.owe_money) / 100)))
+            table.setItem(now_row, 4, QTableWidgetItem(str(order.date)))
+
+    @staticmethod
+    def draw_order_sale_item_table(table, order):
+        sale_list = json.loads(order.sale_list)
+
+        table.clearContents()
+        table.setRowCount(0)
+        for item in sale_list:
+            now_row = table.rowCount()
+            table.setRowCount(now_row + 1)
+
+            table.setItem(now_row, 0, QTableWidgetItem(item["cargo_type"]))
+            table.setItem(now_row, 1, QTableWidgetItem(str(item["count"])))
+            table.setItem(now_row, 2, QTableWidgetItem(item["unit"]))
+            table.setItem(now_row, 3, QTableWidgetItem("%.2f元" % (float(item["price"]) / 100)))
+            table.setItem(now_row, 4, QTableWidgetItem("%d天" % item["life"]))
+            table.setItem(now_row, 5, QTableWidgetItem(str(item["production_date"])))

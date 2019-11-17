@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OrderWindow</class>
+ <widget class="QMainWindow" name="OrderWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>998</width>
+    <height>488</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>订单管理</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="orderListTable">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>521</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>客户名称</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>总金额</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>已付</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>欠款</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>订单日期</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QTableWidget" name="saleItemListTable">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>70</y>
+      <width>451</width>
+      <height>411</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>货物种类</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>数量</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>单位</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>单价</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>保质期</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>生产日期</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLineEdit" name="pageSizeEdit">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>35</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>20</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="eachPageLabel">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>35</y>
+      <width>60</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>每页显示：</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="lastPageBtn">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>5</y>
+      <width>71</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>上一页</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nextPageBtn">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>5</y>
+      <width>71</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>下一页</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="noPageLabel">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>11</y>
+      <width>60</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>当前页数：</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="pageLabel">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>60</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>20</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>排序方式：</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="sortComboBox">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>20</y>
+      <width>104</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>订单日期</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>欠款</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>总金额</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>客户名称</string>
+     </property>
+    </item>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

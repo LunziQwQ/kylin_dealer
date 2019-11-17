@@ -98,7 +98,7 @@ class Ui_StockWindow(object):
         self.buyBtn.setText(_translate("StockWindow", "进货"))
         self.editBtn.setText(_translate("StockWindow", "修改"))
         self.lastPageBtn.setText(_translate("StockWindow", "上一页"))
-        self.pageSizeEdit.setText(_translate("StockWindow", "10"))
+        self.pageSizeEdit.setText(_translate("StockWindow", "15"))
         self.eachPageLabel.setText(_translate("StockWindow", "每页显示："))
         self.noPageLabel.setText(_translate("StockWindow", "当前页数："))
         self.pageLabel.setText(_translate("StockWindow", "1"))

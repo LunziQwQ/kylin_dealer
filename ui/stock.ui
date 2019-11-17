@@ -122,7 +122,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>10</string>
+    <string>15</string>
    </property>
   </widget>
   <widget class="QLabel" name="eachPageLabel">

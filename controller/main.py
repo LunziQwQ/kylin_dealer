@@ -30,11 +30,10 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.stock_window.exec()
 
     def order_btn_on_click(self):
-        # self.order_window = OrderController()
-        # self.order_window.show()
-        # QApplication.processEvents()
-        # self.order_window.exec()
-        pass
+        self.order_window = OrderController()
+        self.order_window.show()
+        QApplication.processEvents()
+        self.order_window.exec()
 
     def custom_btn_on_click(self):
         self.custom_window = CustomController()
