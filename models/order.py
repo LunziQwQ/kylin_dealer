@@ -1,4 +1,4 @@
-from peewee import CharField, IntegerField, ForeignKeyField, DateField
+from peewee import CharField, IntegerField, ForeignKeyField, DateField, TextField
 
 from models import BaseModel
 from models.cargo import Cargo
@@ -7,10 +7,8 @@ from models.custom import Custom
 
 
 class Order(BaseModel):
-    cargo_type = ForeignKeyField(CargoType, related_name='order_list')
-    production_date = ForeignKeyField(Cargo, related_name='order_list')
+    cargo_list = TextField()
     custom_name = ForeignKeyField(Custom, related_name='order_list')
-    size = IntegerField(default=0)
     comment = CharField(default="")
     need_pay = IntegerField(default=0)
     now_pay = IntegerField(default=0)

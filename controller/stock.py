@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessage
 
 from controller.add_cargo_type import AddCargoTypeDialog
 from controller.edit_cargo import EditCargoDialog
+from controller.sale_cargo import SaleCargoDialog
 from ui.stock import Ui_StockWindow
 
 from models.cargo_type import CargoType
@@ -25,6 +26,7 @@ class StockController(QMainWindow, Ui_StockWindow):
 
         self.editBtn.clicked.connect(self.edit_btn_on_click)
         self.buyBtn.clicked.connect(self.buy_btn_on_click)
+        self.saleBtn.clicked.connect(self.sale_btn_on_click)
         self.nextPageBtn.clicked.connect(self.next_page_btn_on_click)
         self.lastPageBtn.clicked.connect(self.last_page_btn_on_click)
         self.addCargoTypeBtn.clicked.connect(self.add_cargo_type_btn_on_click)
@@ -129,6 +131,11 @@ class StockController(QMainWindow, Ui_StockWindow):
                 print(e)
                 QMessageBox.warning(self, "添加进货失败", "添加进货信息失败", QMessageBox.Yes)
             self.exec(ct_now_row)
+
+    def sale_btn_on_click(self):
+        sale_dialog = SaleCargoDialog(self)
+        if sale_dialog.exec_():
+            pass
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)

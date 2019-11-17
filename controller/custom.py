@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QMessage
 from controller.edit_custom import EditCustomDialog
 from models.cargo_type import CargoType
 from models.custom import Custom
+from services.custom import CustomService
 from ui.custom import Ui_CustomWindow
 
 
@@ -20,7 +21,7 @@ class CustomController(QMainWindow, Ui_CustomWindow):
         self.editBtn.clicked.connect(self.edit_custom_btn_on_click)
         self.delBtn.clicked.connect(self.del_custom_btn_on_click)
 
-        self.searchEdit.textChanged.connect(self.serach_edit_changed)
+        self.searchEdit.textChanged.connect(self.search_edit_changed)
 
         self.customListTable.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.customListTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
@@ -32,25 +33,14 @@ class CustomController(QMainWindow, Ui_CustomWindow):
         self.custom_list = []
 
     def exec(self, selected_row=0, search_text=None):
-        self.get_custom_list(search_text)
-        self.draw_custom_list_table()
+        self.custom_list = CustomService.get_custom_list(search_text)
+        CustomService.draw_custom_list_table(self.customListTable, self.custom_list)
         if len(self.custom_list) > 0:
             self.customListTable.selectRow(selected_row)
             self.customListTable.selectRow(selected_row)
         else:
             self.customListTable.clearContents()
             self.customListTable.setRowCount(0)
-
-    def get_custom_list(self, search_text=None):
-        custom_list = Custom.select()
-        if custom_list.count() > 0:
-            if not search_text:
-                self.custom_list = [i for i in custom_list]
-            else:
-                self.custom_list = list(filter(lambda c: search_text in c.name \
-                                                         or search_text in c.phone \
-                                                         or search_text in c.addr \
-                                                         or search_text in c.comment, custom_list))
 
     def add_custom_btn_on_click(self):
         add_dialog = EditCustomDialog(self)
@@ -86,7 +76,7 @@ class CustomController(QMainWindow, Ui_CustomWindow):
                 custom.save()
                 self.exec(now_row)
 
-    def serach_edit_changed(self):
+    def search_edit_changed(self):
         search_text = self.searchEdit.text()
         self.exec(search_text=search_text)
 
@@ -102,17 +92,3 @@ class CustomController(QMainWindow, Ui_CustomWindow):
             custom.delete_instance()
             self.custom_list.remove(custom)
             self.exec()
-
-    def draw_custom_list_table(self):
-        self.customListTable.clearContents()
-        self.customListTable.setRowCount(0)
-        for custom in self.custom_list:
-            now_row = self.customListTable.rowCount()
-            self.customListTable.setRowCount(now_row + 1)
-
-            self.customListTable.setItem(now_row, 0, QTableWidgetItem(custom.name))
-            self.customListTable.setItem(now_row, 1, QTableWidgetItem(custom.phone))
-            self.customListTable.setItem(now_row, 2, QTableWidgetItem(custom.addr))
-            self.customListTable.setItem(now_row, 3, QTableWidgetItem("%.2f元" % (float(custom.trade_money) / 100)))
-            self.customListTable.setItem(now_row, 4, QTableWidgetItem("%.2f元" % (float(custom.owe_money) / 100)))
-            self.customListTable.setItem(now_row, 5, QTableWidgetItem(custom.comment))

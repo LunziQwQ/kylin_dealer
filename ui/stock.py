@@ -69,6 +69,9 @@ class Ui_StockWindow(object):
         self.delCargoTypeBtn = QtWidgets.QPushButton(StockWindow)
         self.delCargoTypeBtn.setGeometry(QtCore.QRect(100, 10, 71, 61))
         self.delCargoTypeBtn.setObjectName("delCargoTypeBtn")
+        self.saleBtn = QtWidgets.QPushButton(StockWindow)
+        self.saleBtn.setGeometry(QtCore.QRect(650, 10, 111, 61))
+        self.saleBtn.setObjectName("saleBtn")
 
         self.retranslateUi(StockWindow)
         QtCore.QMetaObject.connectSlotsByName(StockWindow)
@@ -102,5 +105,6 @@ class Ui_StockWindow(object):
         self.nextPageBtn.setText(_translate("StockWindow", "下一页"))
         self.addCargoTypeBtn.setText(_translate("StockWindow", "添加"))
         self.delCargoTypeBtn.setText(_translate("StockWindow", "删除"))
+        self.saleBtn.setText(_translate("StockWindow", "出货"))
 
 
