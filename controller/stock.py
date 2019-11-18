@@ -127,6 +127,9 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.exec(ct_now_row)
 
     def buy_btn_on_click(self):
+        if not self.ct_list:
+            QMessageBox.warning(self, "进货失败", "请先添加一个货物种类", QMessageBox.Yes)
+            return
         ct_now_row = self.cargoTypeListTable.currentRow()
         cargo_type = self.ct_list[ct_now_row]
 
