@@ -36,7 +36,7 @@ class ChooseCustomDialog(QDialog, Ui_ChooseCustom):
 
     def get_result(self):
         now_row = self.customListTable.currentRow()
-        if now_row < len(self.custom_list):
+        if self.custom_list and now_row < len(self.custom_list):
             return self.custom_list[now_row]
         else:
             return None
