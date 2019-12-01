@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
-from controller.setting import SettingController
+from controller.office_exp import OfficeExpController
 from controller.custom import CustomController
 from controller.order import OrderController
 from controller.stock import StockController
@@ -16,12 +16,12 @@ class MainController(QMainWindow, Ui_MainWindow):
         self.stock_window = None
         self.order_window = None
         self.custom_window = None
-        self.setting_window = None
+        self.office_ext_window = None
 
         self.stockBtn.clicked.connect(self.stock_btn_on_click)
         self.orderBtn.clicked.connect(self.order_btn_on_click)
         self.customBtn.clicked.connect(self.custom_btn_on_click)
-        self.settingBtn.clicked.connect(self.setting_btn_on_click)
+        self.officeExpBtn.clicked.connect(self.office_exp_btn_on_click)
 
     def stock_btn_on_click(self):
         self.stock_window = StockController()
@@ -41,9 +41,8 @@ class MainController(QMainWindow, Ui_MainWindow):
         QApplication.processEvents()
         self.custom_window.exec()
 
-    def setting_btn_on_click(self):
-        # self.setting_window = SettingController()
-        # self.setting_window.show()
-        # QApplication.processEvents()
-        # self.setting_window.exec()
-        pass
+    def office_exp_btn_on_click(self):
+        self.office_ext_window = OfficeExpController()
+        self.office_ext_window.show()
+        QApplication.processEvents()
+        self.office_ext_window.exec()

@@ -31,6 +31,10 @@ class CargoService(object):
             cargo.count -= count
             cargo.save()
 
+            cargo_type = CargoType.get_by_id(cargo.cargo_type.id)
+            cargo_type.count -= count
+            cargo_type.save()
+
     @staticmethod
     def draw_cargo_table(table, cargo_list):
         table.clearContents()

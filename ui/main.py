@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/lunzi/Projects/Python/Kylin_Dealer/ui/view/main.ui'
+# Form implementation generated from reading ui file '/Users/lunzi/Projects/Python/Kylin_Dealer/ui/main.ui'
 #
 # Created by: PyQt5 UI code generator 5.12
 #
@@ -33,9 +33,9 @@ class Ui_MainWindow(object):
         self.customBtn = QtWidgets.QPushButton(self.centralwidget)
         self.customBtn.setGeometry(QtCore.QRect(0, 300, 551, 101))
         self.customBtn.setObjectName("customBtn")
-        self.settingBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.settingBtn.setGeometry(QtCore.QRect(0, 400, 551, 101))
-        self.settingBtn.setObjectName("settingBtn")
+        self.officeExpBtn = QtWidgets.QPushButton(self.centralwidget)
+        self.officeExpBtn.setGeometry(QtCore.QRect(0, 400, 551, 101))
+        self.officeExpBtn.setObjectName("officeExpBtn")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -48,6 +48,6 @@ class Ui_MainWindow(object):
         self.stockBtn.setText(_translate("MainWindow", "库存管理"))
         self.orderBtn.setText(_translate("MainWindow", "订单管理"))
         self.customBtn.setText(_translate("MainWindow", "客户管理"))
-        self.settingBtn.setText(_translate("MainWindow", "设置"))
+        self.officeExpBtn.setText(_translate("MainWindow", "办公支出记录"))
 
 

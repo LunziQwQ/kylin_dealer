@@ -146,17 +146,22 @@ class StockController(QMainWindow, Ui_StockWindow):
             self.exec(ct_now_row)
 
     def sale_btn_on_click(self):
+        ct_now_row = self.cargoTypeListTable.currentRow()
         sale_dialog = SaleCargoDialog(self)
         if sale_dialog.exec_():
             custom, sale_dict, need_pay, now_pay, owe, date, comment = sale_dialog.get_result()
             if not custom:
                 QMessageBox.warning(self, "出货失败", "必须选择一个客户", QMessageBox.Yes)
                 return
+            if not sale_dict:
+                QMessageBox.warning(self, "出货失败", "必须选择至少一个货物", QMessageBox.Yes)
+                return
             order = Order.build(custom, sale_dict, need_pay, now_pay, owe, date, comment)
             order.save()
             CargoService.sale_cargoes(sale_dict)
             CustomService.sale_cargo_for_custom(custom, need_pay, owe)
             QMessageBox.information(self, "出货成功", "出货成功：可在订单管理中查询", QMessageBox.Yes)
+            self.exec(ct_now_row)
 
     def cargo_type_table_on_click(self, row, column):
         self.cargoTypeListTable.selectRow(row)

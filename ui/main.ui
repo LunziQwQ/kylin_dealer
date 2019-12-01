@@ -85,7 +85,7 @@
      <string>客户管理</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="settingBtn">
+   <widget class="QPushButton" name="officeExpBtn">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -95,7 +95,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>设置</string>
+     <string>办公支出记录</string>
     </property>
    </widget>
   </widget>
