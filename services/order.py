@@ -50,3 +50,14 @@ class OrderService(object):
             table.setItem(now_row, 3, QTableWidgetItem("%.2f元" % (float(item["price"]) / 100)))
             table.setItem(now_row, 4, QTableWidgetItem("%d天" % item["life"]))
             table.setItem(now_row, 5, QTableWidgetItem(str(item["production_date"])))
+
+    @staticmethod
+    def get_total_money():
+        total_money = 0
+        total_owe = 0
+        order_list = Order.select()
+        for order in order_list:
+            total_money += order.need_pay
+            total_owe += order.owe_money
+
+        return total_money, total_owe
