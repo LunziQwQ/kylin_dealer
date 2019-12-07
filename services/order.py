@@ -7,16 +7,20 @@ from models.order import Order
 
 class OrderService(object):
     @staticmethod
-    def get_order_list(page, page_size, order_method):
+    def get_order_list(order_method, search_text):
         order_method_map = {
             "订单日期": Order.date.desc(),
             "欠款": Order.owe_money.desc(),
             "总金额": Order.need_pay.desc(),
             "客户名称": Order.custom.name
         }
-        results = Order.select().order_by(order_method_map[order_method]).paginate(int(page), int(page_size))
+        results = Order.select().order_by(order_method_map[order_method])
         if results.count() > 0:
-            return list(results)
+            if not search_text:
+                return list(results)
+            else:
+                return list(filter(lambda o: search_text in o.custom.name \
+                                             or search_text in o.comment, results))
         else:
             return []
 

@@ -89,88 +89,10 @@
      </property>
     </column>
    </widget>
-   <widget class="QLineEdit" name="pageSizeEdit">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>35</y>
-      <width>113</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>20</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="eachPageLabel">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>35</y>
-      <width>60</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>每页显示：</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="lastPageBtn">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>5</y>
-      <width>71</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>上一页</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="nextPageBtn">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>5</y>
-      <width>71</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>下一页</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="noPageLabel">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>11</y>
-      <width>60</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>当前页数：</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="pageLabel">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>60</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>350</x>
       <y>20</y>
       <width>71</width>
       <height>31</height>
@@ -183,7 +105,7 @@
    <widget class="QComboBox" name="sortComboBox">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>410</x>
       <y>20</y>
       <width>104</width>
       <height>31</height>
@@ -265,7 +187,7 @@
    <widget class="QPushButton" name="editBtn">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>10</x>
       <y>10</y>
       <width>91</width>
       <height>51</height>
@@ -273,6 +195,29 @@
     </property>
     <property name="text">
      <string>修改订单</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>20</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>搜索：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="searchEdit">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>
