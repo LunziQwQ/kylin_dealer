@@ -7,17 +7,16 @@ class CustomService(object):
 
     @staticmethod
     def get_custom_list(search_text=None):
-        custom_list = Custom.select()
-        if custom_list.count() > 0:
-            if not search_text:
-                return list(custom_list)
-            else:
-                return list(filter(lambda c: search_text in c.name \
-                                             or search_text in c.phone \
-                                             or search_text in c.addr \
-                                             or search_text in c.comment, custom_list))
+        if not search_text:
+            return list(Custom.select().order_by(Custom.name))
         else:
-            return []
+            return list(Custom.select().where(
+                Custom.name.contains(search_text) | Custom.phone.contains(search_text) | Custom.addr.contains(
+                    search_text) | Custom.comment.contains(search_text)).order_by(Custom.name))
+
+    @staticmethod
+    def delete_custom(custom):
+        custom.delete_instance()
 
     @staticmethod
     def sale_cargo_for_custom(custom, need_pay, owe):

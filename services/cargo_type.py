@@ -6,16 +6,12 @@ from models.cargo_type import CargoType
 class CargoTypeService(object):
     @staticmethod
     def get_cargo_type_list_by_page(page, page_size):
-        results = CargoType.select().order_by(CargoType.name).paginate(int(page), int(page_size))
-        if results.count() > 0:
-            return list(results)
-        else:
-            return []
+        return list(CargoType.select().order_by(CargoType.name).paginate(int(page), int(page_size)))
 
     @staticmethod
     def get_cargo_type_list_by_search(search_text=None):
         if search_text:
-            return list(filter(lambda ct: search_text in ct.name, CargoType.select().order_by(CargoType.name)))
+            return list(CargoType.select().where(CargoType.name.contains(search_text)).order_by(CargoType.name))
         else:
             return list(CargoType.select().order_by(CargoType.name))
 

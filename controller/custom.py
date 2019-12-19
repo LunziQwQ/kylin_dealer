@@ -4,6 +4,7 @@ from controller.edit_custom import EditCustomDialog
 from models.cargo_type import CargoType
 from models.custom import Custom
 from services.custom import CustomService
+from services.order import OrderService
 from ui.custom import Ui_CustomWindow
 
 
@@ -86,8 +87,11 @@ class CustomController(QMainWindow, Ui_CustomWindow):
 
         now_row = self.customListTable.currentRow()
         custom = self.custom_list[now_row]
-        reply = QMessageBox.warning(self, "删除客户", "您确定要删除%s吗" % custom.name, QMessageBox.Yes | QMessageBox.Cancel)
+        effect_count = OrderService.count_by_custom(custom)
+        reply = QMessageBox.warning(self, "删除客户", "您确定要删除%s吗，会同时删除%d条订单" % (custom.name, effect_count),
+                                    QMessageBox.Yes | QMessageBox.Cancel)
         if reply == QMessageBox.Yes:
-            custom.delete_instance()
+            OrderService.delete_by_custom(custom)
+            CustomService.delete_custom(custom)
             self.custom_list.remove(custom)
             self.exec()

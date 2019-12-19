@@ -7,15 +7,11 @@ class OfficeExpService(object):
 
     @staticmethod
     def get_exp_list(search_text=None):
-        exp_list = OfficeExp.select()
-        if exp_list.count() > 0:
-            if not search_text:
-                return list(exp_list)
-            else:
-                return list(filter(lambda c: search_text in c.name \
-                                             or search_text in c.comment, exp_list))
+        if not search_text:
+            return list(OfficeExp.select())
         else:
-            return []
+            return list(OfficeExp.select().where(
+                OfficeExp.name.contains(search_text) | OfficeExp.comment.contains(search_text)))
 
     @staticmethod
     def draw_exp_list_table(table, exp_list):

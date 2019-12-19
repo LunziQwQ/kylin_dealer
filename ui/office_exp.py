@@ -45,7 +45,7 @@ class Ui_OfficeExpWindow(object):
         self.label_2.setGeometry(QtCore.QRect(10, 550, 41, 16))
         self.label_2.setObjectName("label_2")
         self.total_money_label = QtWidgets.QLabel(self.centralwidget)
-        self.total_money_label.setGeometry(QtCore.QRect(50, 550, 60, 16))
+        self.total_money_label.setGeometry(QtCore.QRect(50, 550, 80, 16))
         self.total_money_label.setObjectName("total_money_label")
         OfficeExpWindow.setCentralWidget(self.centralwidget)
 

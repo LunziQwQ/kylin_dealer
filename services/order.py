@@ -15,14 +15,22 @@ class OrderService(object):
             "客户名称": Order.custom.name
         }
         results = Order.select().order_by(order_method_map[order_method])
-        if results.count() > 0:
-            if not search_text:
-                return list(results)
-            else:
-                return list(filter(lambda o: search_text in o.custom.name \
-                                             or search_text in o.comment, results))
+        if not search_text:
+            return list(results)
         else:
-            return []
+            return list(filter(lambda o: search_text in o.custom.name \
+                                  or search_text in o.comment \
+                                  or search_text in o.custom.addr \
+                                  or search_text in o.custom.comment \
+                                  or search_text in o.custom.phone, results))
+
+    @staticmethod
+    def count_by_custom(custom):
+        return Order.select().where(Order.custom == custom).count()
+
+    @staticmethod
+    def delete_by_custom(custom):
+        Order.delete().where(Order.custom == custom).execute()
 
     @staticmethod
     def draw_order_list_table(table, order_list):
