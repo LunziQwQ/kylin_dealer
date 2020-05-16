@@ -12,11 +12,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_CustomWindow(object):
     def setupUi(self, CustomWindow):
         CustomWindow.setObjectName("CustomWindow")
-        CustomWindow.resize(655, 554)
+        CustomWindow.resize(879, 554)
         self.centralwidget = QtWidgets.QWidget(CustomWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.customListTable = QtWidgets.QTableWidget(self.centralwidget)
-        self.customListTable.setGeometry(QtCore.QRect(10, 70, 631, 471))
+        self.customListTable.setGeometry(QtCore.QRect(10, 70, 861, 471))
         self.customListTable.setObjectName("customListTable")
         self.customListTable.setColumnCount(6)
         self.customListTable.setRowCount(0)
@@ -42,10 +42,10 @@ class Ui_CustomWindow(object):
         self.delBtn.setGeometry(QtCore.QRect(190, 10, 51, 61))
         self.delBtn.setObjectName("delBtn")
         self.searchEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.searchEdit.setGeometry(QtCore.QRect(460, 20, 171, 31))
+        self.searchEdit.setGeometry(QtCore.QRect(700, 20, 171, 31))
         self.searchEdit.setObjectName("searchEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(420, 20, 41, 31))
+        self.label.setGeometry(QtCore.QRect(660, 20, 41, 31))
         self.label.setObjectName("label")
         CustomWindow.setCentralWidget(self.centralwidget)
 

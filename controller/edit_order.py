@@ -21,12 +21,27 @@ class EditOrderDialog(QDialog, Ui_EditOrder):
         self.payMoneyEdit.setText("%.2f" % (float(order.now_pay) / 100))
         self.oweMoneyEdit.setText("%.2f" % (float(order.owe_money) / 100))
 
-        self.totalMoneyEdit.textChanged.connect(self.cal_owe)
-        self.payMoneyEdit.textChanged.connect(self.cal_owe)
-        self.oweMoneyEdit.textChanged.connect(self.cal_pay)
+        self.totalMoneyEdit.textChanged.connect(self.edit_total_money)
+        self.payMoneyEdit.textChanged.connect(self.edit_pay_money)
+        self.oweMoneyEdit.textChanged.connect(self.edit_owe_money)
 
     def get_result(self):
         return self.totalMoneyEdit.text(), self.payMoneyEdit.text(), self.oweMoneyEdit.text()
+
+    def edit_total_money(self):
+        cur_index = self.totalMoneyEdit.cursorPosition()
+        self.cal_owe()
+        self.totalMoneyEdit.setCursorPosition(cur_index)
+
+    def edit_pay_money(self):
+        cur_index = self.payMoneyEdit.cursorPosition()
+        self.cal_owe()
+        self.payMoneyEdit.setCursorPosition(cur_index)
+
+    def edit_owe_money(self):
+        cur_index = self.oweMoneyEdit.cursorPosition()
+        self.cal_pay()
+        self.oweMoneyEdit.setCursorPosition(cur_index)
 
     # 更新欠款金额
     def cal_owe(self):

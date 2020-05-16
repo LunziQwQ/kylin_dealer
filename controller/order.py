@@ -20,7 +20,8 @@ class OrderController(QMainWindow, Ui_OrderWindow):
         self.sortComboBox.currentIndexChanged.connect(self.sort_combo_box_change)
 
         # unused str params
-        self.searchEdit.textChanged.connect(lambda x: self.exec())
+        self.searchBtn.clicked.connect(self.exec)
+        self.searchEdit.textChanged.connect(self.search_edit_change)
 
         self.orderListTable.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.orderListTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
@@ -57,6 +58,10 @@ class OrderController(QMainWindow, Ui_OrderWindow):
 
         OrderService.draw_order_sale_item_table(self.saleItemListTable, order)
 
+    def search_edit_change(self, text):
+        if len(text) == 0:
+            self.exec()
+
     def edit_btn_on_click(self):
         if self.orderListTable.rowCount() == 0:
             QMessageBox.warning(self, "编辑订单失败", "选中一条订单才可修改", QMessageBox.Yes)
@@ -68,12 +73,19 @@ class OrderController(QMainWindow, Ui_OrderWindow):
         if edit_dialog.exec_():
             total, pay, owe = edit_dialog.get_result()
 
-            self.total_money += int(float(total) * 100) - order.need_pay
-            self.total_owe += int(float(owe) * 100) - order.owe_money
+            total_change = int(float(total) * 100) - order.need_pay
+            owe_change = int(float(owe) * 100) - order.owe_money
+            self.total_money += total_change
+            self.total_owe += owe_change
             order.need_pay = int(float(total) * 100)
             order.now_pay = int(float(pay) * 100)
             order.owe_money = int(float(owe) * 100)
             order.save()
+
+            custom = order.custom
+            custom.trade_money += total_change
+            custom.owe_money += owe_change
+            custom.save()
             self.exec(selected_row=now_row)
 
     def sort_combo_box_change(self):

@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_StockWindow(object):
     def setupUi(self, StockWindow):
         StockWindow.setObjectName("StockWindow")
-        StockWindow.resize(1092, 488)
+        StockWindow.resize(1092, 490)
         self.cargoTypeListTable = QtWidgets.QTableWidget(StockWindow)
         self.cargoTypeListTable.setGeometry(QtCore.QRect(10, 80, 521, 401))
         self.cargoTypeListTable.setObjectName("cargoTypeListTable")
